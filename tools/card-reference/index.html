@@ -318,7 +318,7 @@ const CARDS = [
   {name:"Injury", kind:"team", rarity:"Rare", count:3, prob:"5%", updated:false,
    html:`<p>Roll to determine which starter is injured:</p>
    <ul><li>1: PG</li><li>2: SG</li><li>3: SF</li><li>4: PF</li><li>5: C</li><li>6: You choose which player is injured</li></ul>
-   <p>Injured players are removed from the board immediately, cannot play this round or the next, cannot be traded for Free Agents, and return to the bench after the following round. Promote any bench player to fill the position.</p>`},
+   <p>Injured players are removed from the board immediately, cannot play this round or the next, cannot be traded for Free Agents, and return to the bench after the following round. Promote any bench player to fill the position — they can fill the same position they had last round.</p>`},
 
   {name:"Substitution", kind:"team", rarity:"Immediate", count:3, prob:"5%", updated:false,
    html:`<p>You may either:</p>
@@ -328,7 +328,7 @@ const CARDS = [
   {name:"Load Management", kind:"team", rarity:"Immediate", count:4, prob:"6.67%", updated:false,
    html:`<p>Roll a die to determine which starter must rest:</p>
    <ul><li>1: PG</li><li>2: SG</li><li>3: SF</li><li>4: PF</li><li>5: C</li><li>6: Your opponent chooses the player benched</li></ul>
-   <p>The affected player is benched for the round. Promote any bench player to fill the spot.</p>`},
+   <p>The affected player is benched for the round. Promote any bench player to fill the spot — they can fill the same position they had last round.</p>`},
 
   {name:"All-Star Break", kind:"team", rarity:"Immediate", count:1, prob:"1.67%", updated:false,
    html:`<p>This card affects <strong>both GMs</strong>. Each GM must identify their two players with the highest PPG, bench both of them, and rearrange the remaining lineup however they choose. Benched players' spots must be filled — they can fill the same position they had last round.</p>`},
