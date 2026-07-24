@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Card Court Legends — Card Reference & Draw</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --arena-black:#0E0E12;
+    --panel:#17171D;
+    --panel-line:#2A2A33;
+    --gold:#E8A94A;
+    --gold-dim:#7A5A2A;
+    --hardwood:#C17F3A;
+    --white:#F5F3EF;
+    --muted:#9B9BA5;
+    --common:#8A8A94;
+    --rare:#E8A94A;
+    --unique:#F2D9A8;
+    --wincond:#8FB6A8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:radial-gradient(1200px 800px at 15% -10%, #1a1a22 0%, var(--arena-black) 55%);
+    color:var(--white);
+    font-family:'Inter',sans-serif;
+    padding:40px 24px 80px;
+  }
+  .wrap{max-width:1180px;margin:0 auto;}
+
+  header{margin-bottom:30px;}
+  .eyebrow{
+    font-family:'Barlow Condensed',sans-serif;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:8px;
+  }
+  h1{
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:800;
+    font-size:44px;
+    letter-spacing:.01em;
+    margin:0 0 6px;
+    text-transform:uppercase;
+  }
+  .sub{color:var(--muted);font-size:14.5px;max-width:680px;line-height:1.5;}
+
+  .draw-zone{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+    margin:32px 0 44px;
+  }
+  .deck{
+    background:linear-gradient(165deg,#1B1B22 0%, var(--panel) 60%);
+    border:1px solid var(--panel-line);
+    border-radius:16px;
+    padding:18px;
+    display:flex;flex-direction:column;
+  }
+  .deck-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+  .deck-title{
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:.04em;
+  }
+  .deck-title .dot{width:9px;height:9px;border-radius:2px;display:inline-block;margin-right:8px;}
+  .deck-count{font-size:11.5px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;letter-spacing:.03em;}
+
+  .draw-slot{
+    min-height:180px;
+    border:1px dashed var(--panel-line);
+    border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    padding:16px;
+    margin-bottom:14px;
+    background:rgba(0,0,0,.15);
+    transition:border-color .2s ease;
+  }
+  .draw-slot.empty{color:var(--muted);font-size:13px;font-family:'Barlow Condensed',sans-serif;letter-spacing:.04em;text-transform:uppercase;}
+  .draw-slot .result{width:100%;animation:reveal .25s ease;}
+  @keyframes reveal{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+  .result-name{
+    font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;
+    text-transform:uppercase;margin-bottom:4px;
+  }
+  .result-kind{font-size:10.5px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;font-weight:600;}
+  .result-body{font-size:12.8px;line-height:1.5;color:#DAD8D2;}
+  .result-body ul{margin:4px 0;padding-left:16px;}
+  .result-body li{margin-bottom:2px;}
+  .result-body strong{color:var(--white);}
+  .result-body em{color:var(--gold);font-style:normal;}
+  .wc-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:4px;}
+  .wc-table td{padding:2px 6px 2px 0;color:#DAD8D2;}
+  .wc-table td:first-child{color:var(--muted);width:34px;}
+
+  .deck-actions{display:flex;gap:8px;}
+  .deck-actions button{
+    flex:1;
+    font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    font-size:13px;
+    border-radius:10px;border:none;cursor:pointer;padding:11px;
+    transition:transform .1s ease, opacity .15s ease;
+  }
+  .deck-actions button:active{transform:scale(.97);}
+  .btn-draw{background:var(--gold);color:var(--arena-black);}
+  .btn-draw:hover{opacity:.9;}
+  .btn-reshuffle{background:transparent;border:1px solid var(--panel-line) !important;color:var(--muted);flex:0 0 auto;padding:11px 14px;}
+  .btn-reshuffle:hover{color:var(--white);border-color:var(--gold-dim) !important;}
+
+  .reshuffled-note{font-size:10.5px;color:var(--gold);text-align:center;margin-top:6px;letter-spacing:.03em;height:12px;}
+
+  .legend{
+    display:flex;gap:22px;flex-wrap:wrap;
+    margin-top:8px;padding-top:18px;
+    border-top:1px solid var(--panel-line);
+    font-size:12.5px;color:var(--muted);
+  }
+  .legend span{display:inline-flex;align-items:center;gap:7px;}
+  .dot{width:9px;height:9px;border-radius:2px;display:inline-block;}
+
+  .controls{display:flex;gap:10px;margin:8px 0 22px;flex-wrap:wrap;}
+  .controls button{
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    font-size:13px;
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    color:var(--muted);
+    padding:9px 18px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:all .15s ease;
+  }
+  .controls button:hover{border-color:var(--gold-dim);color:var(--white);}
+  .controls button.active{
+    background:var(--gold);
+    color:var(--arena-black);
+    border-color:var(--gold);
+  }
+
+  h2.section-title{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:22px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--white);
+    margin:40px 0 16px;
+    padding-bottom:10px;
+    border-bottom:1px solid var(--panel-line);
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+    gap:18px;
+  }
+
+  .card{
+    position:relative;
+    background:linear-gradient(165deg,#1B1B22 0%, var(--panel) 60%);
+    border:1px solid var(--panel-line);
+    border-radius:14px;
+    padding:20px 20px 18px;
+    display:flex;
+    flex-direction:column;
+    min-height:180px;
+    transition:border-color .3s ease, box-shadow .3s ease;
+  }
+  .card.team{border-left:3px solid var(--gold);}
+  .card.player{border-left:3px solid var(--hardwood);}
+  .card.winCondition{border-left:3px solid var(--wincond);}
+  .card.just-drawn{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold), 0 0 24px rgba(232,169,74,.25);}
+
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px;}
+  .card-name{
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:700;
+    font-size:21px;
+    text-transform:uppercase;
+    line-height:1.15;
+    letter-spacing:.01em;
+  }
+  .kind{
+    font-size:10.5px;
+    font-weight:600;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-top:3px;
+  }
+
+  .badges{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
+  .rarity{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    padding:3px 10px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+  .rarity.Common{background:rgba(138,138,148,.15);color:var(--common);border:1px solid rgba(138,138,148,.35);}
+  .rarity.Rare{background:rgba(232,169,74,.12);color:var(--rare);border:1px solid rgba(232,169,74,.4);}
+  .rarity.Unique{background:rgba(242,217,168,.14);color:var(--unique);border:1px solid rgba(242,217,168,.5);}
+  .rarity.Immediate{background:rgba(193,127,58,.14);color:var(--hardwood);border:1px solid rgba(193,127,58,.4);}
+  .rarity.Strategic{background:rgba(193,127,58,.14);color:var(--hardwood);border:1px solid rgba(193,127,58,.4);}
+  .rarity.Theme{background:rgba(143,182,168,.14);color:var(--wincond);border:1px solid rgba(143,182,168,.4);}
+
+  .updated{
+    font-size:9.5px;font-weight:700;letter-spacing:.1em;
+    color:var(--arena-black);background:var(--gold);
+    padding:2px 8px;border-radius:999px;text-transform:uppercase;
+  }
+
+  .rules{font-size:13.6px;line-height:1.55;color:#DAD8D2;flex-grow:1;}
+  .rules ul{margin:6px 0;padding-left:18px;}
+  .rules li{margin-bottom:3px;}
+  .rules p{margin:0 0 8px;}
+  .rules strong{color:var(--white);}
+  .rules em{color:var(--gold);font-style:normal;}
+
+  .card-foot{
+    margin-top:14px;padding-top:10px;
+    border-top:1px solid var(--panel-line);
+    display:flex;justify-content:space-between;
+    font-size:11px;color:var(--muted);
+    font-family:'Barlow Condensed',sans-serif;letter-spacing:.04em;
+  }
+
+  footer{
+    margin-top:50px;padding-top:20px;border-top:1px solid var(--panel-line);
+    color:var(--muted);font-size:12px;text-align:center;
+  }
+
+  @media (max-width:820px){
+    .draw-zone{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Card Court Legends</div>
+    <h1>Card Reference &amp; Draw</h1>
+    <p class="sub">Hit draw to pull a random card from each deck, weighted to match real print-run odds. Reference grids below stay in sync with the latest rules text — no reprinting needed to check current wording.</p>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--wincond)"></span> Win Condition — sets the game's theme</span>
+      <span><span class="dot" style="background:var(--gold)"></span> Team Event — public, resolved immediately</span>
+      <span><span class="dot" style="background:var(--hardwood)"></span> Player Event — hidden until stat comparison</span>
+    </div>
+  </header>
+
+  <div class="draw-zone" id="draw-zone"></div>
+
+  <div class="controls">
+    <button class="active" data-filter="all">All Cards</button>
+    <button data-filter="winCondition">Win Conditions</button>
+    <button data-filter="team">Team Events</button>
+    <button data-filter="player">Player Events</button>
+    <button data-filter="updated">Recently Updated</button>
+  </div>
+
+  <div id="winCondition-section">
+    <h2 class="section-title">Win Condition Cards</h2>
+    <div class="grid" id="winCondition-grid"></div>
+  </div>
+
+  <div id="team-section">
+    <h2 class="section-title">Team Event Cards</h2>
+    <div class="grid" id="team-grid"></div>
+  </div>
+
+  <div id="player-section">
+    <h2 class="section-title">Player Event Cards</h2>
+    <div class="grid" id="player-grid"></div>
+  </div>
+
+  <footer>Card Court Legends — internal design reference. Text mirrors the Notion rulebook as of the latest edit session.</footer>
+</div>
+
+<script>
+const CARDS = [
+  {name:"Lights Out Offense", kind:"winCondition", rarity:"Theme", count:3, prob:"7.5%", updated:false,
+   positions:{PG:"Assists",SG:"Points",SF:"Points",PF:"Rebounds",C:"Points"}, flavor:"A classic offensive showcase."},
+  {name:"Defensive Stand", kind:"winCondition", rarity:"Theme", count:3, prob:"7.5%", updated:false,
+   positions:{PG:"Steals",SG:"Steals",SF:"Points",PF:"Blocks",C:"Rebounds"}, flavor:"Defense wins rounds."},
+  {name:"Team First", kind:"winCondition", rarity:"Theme", count:3, prob:"7.5%", updated:false,
+   positions:{PG:"Assists",SG:"Assists",SF:"Points",PF:"Rebounds",C:"Assists"}, flavor:"Teamwork over flash."},
+  {name:"Run and Gun", kind:"winCondition", rarity:"Theme", count:3, prob:"7.5%", updated:false,
+   positions:{PG:"Points",SG:"Points",SF:"Steals",PF:"Points",C:"Assists"}, flavor:"Fast pace, full throttle."},
+  {name:"Paint Domination", kind:"winCondition", rarity:"Theme", count:2, prob:"5%", updated:false,
+   positions:{PG:"Assists",SG:"Steals",SF:"Rebounds",PF:"Points",C:"Points"}, flavor:"Control the interior."},
+  {name:"Fast Break", kind:"winCondition", rarity:"Theme", count:2, prob:"5%", updated:false,
+   positions:{PG:"Steals",SG:"Steals",SF:"Assists",PF:"Points",C:"Rebounds"}, flavor:"Transition game."},
+  {name:"Iso Game", kind:"winCondition", rarity:"Theme", count:2, prob:"5%", updated:false,
+   positions:{PG:"Points",SG:"Points",SF:"Points",PF:"Assists",C:"Blocks"}, flavor:"Stars take over."},
+  {name:"Board Battle", kind:"winCondition", rarity:"Theme", count:2, prob:"5%", updated:false,
+   positions:{PG:"Points",SG:"Rebounds",SF:"Rebounds",PF:"Rebounds",C:"Rebounds"}, flavor:"Rebounding rules."},
+  {name:"Total Lockdown", kind:"winCondition", rarity:"Theme", count:2, prob:"5%", updated:false,
+   positions:{PG:"Steals",SG:"Blocks",SF:"Blocks",PF:"Steals",C:"Blocks"}, flavor:"Rim protectors shine."},
+  {name:"Triple Double Threat", kind:"winCondition", rarity:"Theme", count:2, prob:"5%", updated:false,
+   positions:{PG:"Assists",SG:"Points",SF:"Assists",PF:"Points",C:"Assists"}, flavor:"Versatility rewarded."},
+
+  {name:"Trade Request", kind:"team", rarity:"Immediate", count:3, prob:"5%", updated:false,
+   html:`<p>Roll a die to determine which starter must be traded:</p>
+   <ul><li>1: Point Guard</li><li>2: Shooting Guard</li><li>3: Small Forward</li><li>4: Power Forward</li><li>5: Center</li><li>6: Your opponent chooses the player traded</li></ul>
+   <p>The affected player is traded immediately: discard them for the remainder of the series, draw the top two cards from your Market, choose one to promote into the vacant spot, discard the other.</p>`},
+
+  {name:"Injury", kind:"team", rarity:"Rare", count:3, prob:"5%", updated:false,
+   html:`<p>Roll to determine which starter is injured:</p>
+   <ul><li>1: PG</li><li>2: SG</li><li>3: SF</li><li>4: PF</li><li>5: C</li><li>6: You choose which player is injured</li></ul>
+   <p>Injured players are removed from the board immediately, cannot play this round or the next, cannot be traded for Free Agents, and return to the bench after the following round. Promote any bench player to fill the position.</p>`},
+
+  {name:"Substitution", kind:"team", rarity:"Immediate", count:3, prob:"5%", updated:false,
+   html:`<p>You may either:</p>
+   <ul><li>Swap the positions of two starters, or</li><li>Swap one starter with one bench player</li></ul>
+   <p>Promoted bench players may fill any position, regardless of real-life position.</p>`},
+
+  {name:"Load Management", kind:"team", rarity:"Immediate", count:4, prob:"6.67%", updated:false,
+   html:`<p>Roll a die to determine which starter must rest:</p>
+   <ul><li>1: PG</li><li>2: SG</li><li>3: SF</li><li>4: PF</li><li>5: C</li><li>6: Your opponent chooses the player benched</li></ul>
+   <p>The affected player is benched for the round. Promote any bench player to fill the spot.</p>`},
+
+  {name:"All-Star Break", kind:"team", rarity:"Immediate", count:1, prob:"1.67%", updated:false,
+   html:`<p>This card affects <strong>both GMs</strong>. Each GM must identify their two players with the highest PPG, bench both of them, and rearrange the remaining lineup however they choose. Benched players' spots must be filled — they can fill the same position they had last round.</p>`},
+
+  {name:"Pick and Roll", kind:"team", rarity:"Immediate", count:4, prob:"6.67%", updated:true,
+   html:`<p>Choose any two of your opponent's starters and switch their positions.</p>
+   <p><strong>This is a single swap between the two chosen players — complete it once, do not repeat.</strong></p>
+   <p>The switched players immediately adopt the stat associated with their new position and are compared using the Win Condition stat for that position.</p>`},
+
+  {name:"Sixth Man", kind:"team", rarity:"Immediate", count:3, prob:"5%", updated:true,
+   html:`<p>Choose one of your bench players and choose any stat (Points, Assists, Steals, Rebounds, or Blocks). Your opponent must choose a bench player as well.</p>
+   <p>These two bench players are compared in an <strong>additional matchup</strong> this round — if you win, gain <strong>+1 bonus point</strong>.</p>
+   <p><em>This bonus is the same regardless of which stat is chosen — Points no longer awards extra.</em> Only players currently on the bench may be selected.</p>`},
+
+  {name:"Veteran Experience", kind:"player", rarity:"Rare", count:4, prob:"6.67%", updated:true,
+   html:`<p>Assign to any player. For this round, that player's <strong>career total</strong> in the Win Condition stat for their position replaces their per-game value — not their career <em>average</em>, and not this season's per-game number.</p>
+   <p><em>Example: if the Win Condition is Assists, use total career assists — not career APG, and not this season's APG.</em></p>
+   <p>This overrides and discards all other Player Events assigned to the same position from both sides. Benefits players with long careers.</p>`},
+
+  {name:"Free Throws", kind:"player", rarity:"Rare", count:3, prob:"5%", updated:true,
+   html:`<p>Choose one position where the Win Condition is Points. For that position: replace PPG for both players with FT%, compared directly (higher wins), and discard all PPG modifiers on that position (Hot Hand, Above Average Play, etc.)</p>
+   <p>If no position has a Points win condition: each GM selects a bench player, compare FT% as a standalone sixth category, award normally.</p>
+   <p><strong>The winner earns 1 point, same as any other matchup win — no additional bonus.</strong></p>`},
+
+  {name:"Switching Defense", kind:"player", rarity:"Strategic", count:3, prob:"5%", updated:true,
+   html:`<p>If Steals is a Win Condition this round, you may reassign defensive responsibility: identify the player on your roster with the <strong>highest SPG that still exceeds</strong> your currently assigned Steals player's SPG. That player becomes your Steals representative for this matchup.</p>
+   <p>If no such player exists, or Steals is not a Win Condition this round, discard this card.</p>`},
+
+  {name:"Hot Hand", kind:"player", rarity:"Rare", count:2, prob:"3.33%", updated:false,
+   html:`<p>Assign to any player. That position becomes Points for this round (overriding any existing Win Condition). Increase your player's PPG by <strong>50%</strong> before comparing.</p>
+   <p>If a Player Event is assigned to the opposing player, it's still valid unless that card doesn't apply to Points win conditions.</p>`},
+
+  {name:"Foul", kind:"player", rarity:"Common", count:3, prob:"5%", updated:false,
+   html:`<p>Assign to any player in a Points matchup. Subtract <strong>1 PPG</strong> this round. If no Points win condition exists, discard.</p>`},
+
+  {name:"Technical Foul", kind:"player", rarity:"Rare", count:2, prob:"3.33%", updated:false,
+   html:`<p>Assign to any of your players in a Points win condition. Subtract <strong>2 PPG</strong> from this player this round.</p>`},
+
+  {name:"Flagrant Foul", kind:"player", rarity:"Rare", count:1, prob:"1.67%", updated:false,
+   html:`<p>Assign to any of your players in a Points win condition. Subtract <strong>3 PPG</strong> from this player this round.</p>`},
+
+  {name:"Turnover", kind:"player", rarity:"Common", count:4, prob:"6.67%", updated:false,
+   html:`<p>Assign to any player in an Assists matchup. Subtract <strong>1 APG</strong> this round. If no Assists matchup exists, discard.</p>`},
+
+  {name:"Poster Dunk", kind:"player", rarity:"Rare", count:2, prob:"3.33%", updated:false,
+   html:`<p>Assign to any player with a Points win condition. Add <strong>2 PPG</strong> this round. If no Points matchup exists, discard.</p>`},
+
+  {name:"Ankle-Breaker", kind:"player", rarity:"Rare", count:3, prob:"5%", updated:true,
+   html:`<p>Assign to a player in an Assists matchup.</p>
+   <ul><li>That player gains <strong>+1 APG</strong> this round</li><li>Their opponent must bench any one of their starters for the <strong>next round</strong></li></ul>
+   <p>If Assists is not a Win Condition, discard this card.</p>`},
+
+  {name:"Full-Court Press", kind:"player", rarity:"Rare", count:2, prob:"3.33%", updated:false,
+   html:`<p>Assign to any player in a Steals matchup. Add <strong>0.5 SPG</strong> this round. If Steals is not a Win Condition, discard.</p>`},
+
+  {name:"Buzzer Beater", kind:"player", rarity:"Unique", count:1, prob:"1.67%", updated:false,
+   html:`<p>Assign to any player in a Points matchup. Add <strong>+5 PPG</strong> to their PPG this round.</p>`},
+
+  {name:"Above Average Play", kind:"player", rarity:"Common", count:3, prob:"5%", updated:false,
+   html:`<p>Assign to any player. Increase that player's Win Condition stat by <strong>20%</strong> this round.</p>`},
+
+  {name:"Below Average Play", kind:"player", rarity:"Common", count:3, prob:"5%", updated:false,
+   html:`<p>Assign to any player. Decrease that player's Win Condition stat by <strong>20%</strong> this round.</p>`},
+
+  {name:"Timeout", kind:"player", rarity:"Rare", count:3, prob:"5%", updated:false,
+   html:`<p><em>Reaction — the only Player Event that may be saved for a future round.</em></p>
+   <p>Play immediately when one of the following is revealed: Injury, Technical Foul, or Ankle-Breaker. The targeted effect is canceled completely.</p>`},
+];
+
+const DECKS = {
+  winCondition:{label:"Win Condition", dotColor:"var(--wincond)"},
+  team:{label:"Team Event", dotColor:"var(--gold)"},
+  player:{label:"Player Event", dotColor:"var(--hardwood)"},
+};
+
+const piles = {};
+
+function buildFullDeck(kind){
+  const deck = [];
+  CARDS.filter(c => c.kind === kind).forEach(c => {
+    for(let i=0;i<c.count;i++) deck.push(c);
+  });
+  return deck;
+}
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function resetPile(kind){
+  piles[kind] = shuffle(buildFullDeck(kind));
+}
+Object.keys(DECKS).forEach(resetPile);
+
+function winConditionBody(c){
+  const rows = Object.entries(c.positions).map(([pos,stat]) => `<tr><td>${pos}</td><td>${stat}</td></tr>`).join('');
+  return `<table class="wc-table">${rows}</table><p style="margin-top:8px;"><em>${c.flavor}</em></p>`;
+}
+function cardBodyHtml(c){
+  return c.kind === 'winCondition' ? winConditionBody(c) : c.html;
+}
+
+function cardEl(c){
+  const d = document.createElement('div');
+  d.className = `card ${c.kind}`;
+  d.dataset.kind = c.kind;
+  d.dataset.updated = c.updated;
+  d.dataset.name = c.name;
+  d.innerHTML = `
+    <div class="card-top">
+      <div>
+        <div class="card-name">${c.name}</div>
+        <div class="kind">${c.kind === 'team' ? 'Team Event · Public' : c.kind === 'player' ? 'Player Event · Hidden' : 'Win Condition'}</div>
+      </div>
+      <div class="badges">
+        ${c.updated ? '<span class="updated">Updated</span>' : ''}
+        <span class="rarity ${c.rarity}">${c.rarity}</span>
+      </div>
+    </div>
+    <div class="rules">${cardBodyHtml(c)}</div>
+    <div class="card-foot"><span>${c.count} in deck</span><span>${c.prob} draw odds</span></div>
+  `;
+  return d;
+}
+
+const grids = {
+  winCondition: document.getElementById('winCondition-grid'),
+  team: document.getElementById('team-grid'),
+  player: document.getElementById('player-grid'),
+};
+CARDS.forEach(c => grids[c.kind].appendChild(cardEl(c)));
+
+function highlightDrawn(kind, name){
+  document.querySelectorAll(`.card[data-kind="${kind}"]`).forEach(el=>{
+    el.classList.toggle('just-drawn', el.dataset.name === name);
+  });
+}
+
+function renderDrawResult(kind, card, reshuffledNote){
+  const slot = document.getElementById(`slot-${kind}`);
+  slot.classList.remove('empty');
+  slot.innerHTML = `<div class="result">
+    <div class="result-name">${card.name}</div>
+    <div class="result-kind">${card.rarity}${card.kind !== 'winCondition' ? (card.kind === 'team' ? ' · Public' : ' · Hidden') : ''}</div>
+    <div class="result-body">${cardBodyHtml(card)}</div>
+  </div>`;
+  document.getElementById(`note-${kind}`).textContent = reshuffledNote || '';
+  highlightDrawn(kind, card.name);
+}
+
+function drawCard(kind){
+  let note = '';
+  if(piles[kind].length === 0){
+    resetPile(kind);
+    note = 'Deck reshuffled';
+  }
+  const card = piles[kind].pop();
+  renderDrawResult(kind, card, note);
+  document.getElementById(`count-${kind}`).textContent = `${piles[kind].length} left in pile`;
+}
+
+function reshuffleDeck(kind){
+  resetPile(kind);
+  document.getElementById(`count-${kind}`).textContent = `${piles[kind].length} left in pile`;
+  document.getElementById(`note-${kind}`).textContent = 'Deck reshuffled';
+}
+
+const drawZone = document.getElementById('draw-zone');
+Object.entries(DECKS).forEach(([kind, meta]) => {
+  const el = document.createElement('div');
+  el.className = 'deck';
+  el.innerHTML = `
+    <div class="deck-head">
+      <div class="deck-title"><span class="dot" style="background:${meta.dotColor}"></span>${meta.label}</div>
+      <div class="deck-count" id="count-${kind}">${piles[kind].length} left in pile</div>
+    </div>
+    <div class="draw-slot empty" id="slot-${kind}">No card drawn yet</div>
+    <div class="deck-actions">
+      <button class="btn-draw" data-draw="${kind}">Draw</button>
+      <button class="btn-reshuffle" data-reshuffle="${kind}">Reshuffle</button>
+    </div>
+    <div class="reshuffled-note" id="note-${kind}"></div>
+  `;
+  drawZone.appendChild(el);
+});
+drawZone.addEventListener('click', e => {
+  const drawKind = e.target.dataset.draw;
+  const reshuffleKind = e.target.dataset.reshuffle;
+  if(drawKind) drawCard(drawKind);
+  if(reshuffleKind) reshuffleDeck(reshuffleKind);
+});
+
+document.querySelectorAll('.controls button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.controls button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    document.getElementById('winCondition-section').style.display = (f==='all'||f==='winCondition'||f==='updated') ? '' : 'none';
+    document.getElementById('team-section').style.display = (f==='all'||f==='team'||f==='updated') ? '' : 'none';
+    document.getElementById('player-section').style.display = (f==='all'||f==='player'||f==='updated') ? '' : 'none';
+    document.querySelectorAll('.card').forEach(card => {
+      let show = true;
+      if(f==='winCondition') show = card.dataset.kind === 'winCondition';
+      if(f==='team') show = card.dataset.kind === 'team';
+      if(f==='player') show = card.dataset.kind === 'player';
+      if(f==='updated') show = card.dataset.updated === 'true';
+      card.style.display = show ? '' : 'none';
+    });
+  });
+});
+</script>
+</body>
+</html>
