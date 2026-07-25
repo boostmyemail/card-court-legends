@@ -159,10 +159,6 @@
     line-height:1.1;
   }
   .stage.pair .card-name{font-size:18px;}
-  .kind{
-    font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
-    color:var(--muted); margin-top:4px;
-  }
 
   .rarity{
     font-family:'Barlow Condensed',sans-serif;
@@ -433,18 +429,11 @@ function winConditionBody(c){
 function cardBodyHtml(c){
   return c.kind === 'winCondition' ? winConditionBody(c) : c.html;
 }
-function kindLabel(c){
-  return c.kind === 'team' ? 'Team Event · Public' : c.kind === 'player' ? 'Player Event · Hidden' : 'Win Condition';
-}
-
 function cardHtml(c, slotLabel){
   return `<div class="card ${c.kind}">
     ${slotLabel ? `<div class="card-slot-label">${slotLabel}</div>` : ''}
     <div class="card-top">
-      <div>
-        <div class="card-name">${c.name}</div>
-        <div class="kind">${kindLabel(c)}</div>
-      </div>
+      <div class="card-name">${c.name}</div>
       <span class="rarity ${c.rarity}">${c.rarity}</span>
     </div>
     <div class="rules">${cardBodyHtml(c)}</div>
