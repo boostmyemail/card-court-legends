@@ -20,6 +20,7 @@
     --rare:#E8A94A;
     --unique:#F2D9A8;
     --wincond:#8FB6A8;
+    --ability:#B79FE8;
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
   html,body{height:100%;}
@@ -109,7 +110,15 @@
     flex-direction:row;
     gap:12px;
   }
-  .stage.pair .card{flex:1 1 50%; min-width:0;}
+  .stage.pair > .card{flex:1 1 50%; min-width:0;}
+  .stage.pair .pick-wrap{
+    flex:1 1 50%;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .stage.pair .pick-wrap .card{flex:1 1 auto; min-width:0;}
 
   .empty-state{
     flex:1 1 auto;
@@ -144,6 +153,7 @@
   .card.team{border-left:4px solid var(--gold);}
   .card.player{border-left:4px solid var(--hardwood);}
   .card.winCondition{border-left:4px solid var(--wincond);}
+  .card.gmAbility{border-left:4px solid var(--ability);}
 
   .card-slot-label{
     font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
@@ -171,6 +181,7 @@
   .rarity.Immediate{background:rgba(193,127,58,.14);color:var(--hardwood);border:1px solid rgba(193,127,58,.4);}
   .rarity.Strategic{background:rgba(193,127,58,.14);color:var(--hardwood);border:1px solid rgba(193,127,58,.4);}
   .rarity.Theme{background:rgba(143,182,168,.14);color:var(--wincond);border:1px solid rgba(143,182,168,.4);}
+  .rarity.Ability{background:rgba(183,159,232,.14);color:var(--ability);border:1px solid rgba(183,159,232,.4);}
 
   .rules{font-size:13.6px;line-height:1.5;color:#DAD8D2;overflow-y:auto;}
   .stage.pair .rules{font-size:12.4px;}
@@ -202,6 +213,15 @@
     background:transparent; border:1px solid var(--panel-line) !important; color:var(--muted);
   }
   .btn-reshuffle:active{transform:scale(.97);}
+
+  .btn-keep{
+    font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+    font-size:13px;
+    border-radius:12px;border:1px solid var(--ability);
+    background:rgba(183,159,232,.12); color:var(--ability);
+    padding:12px; cursor:pointer;
+  }
+  .btn-keep:active{transform:scale(.97); background:var(--ability); color:var(--arena-black);}
 
   .tabbar{
     flex:0 0 auto;
@@ -270,12 +290,24 @@
         <button class="btn-reshuffle" data-reshuffle="player">Reshuffle</button>
       </div>
     </section>
+
+    <section class="panel" data-kind="gmAbility">
+      <div class="deck-count" id="count-gmAbility"></div>
+      <div class="stage" id="stage-gmAbility">
+        <div class="empty-state">No abilities drawn yet<br>Tap Draw for two GM Abilities, then keep one</div>
+      </div>
+      <div class="actions">
+        <button class="btn-draw" data-draw="gmAbility">Draw 2</button>
+        <button class="btn-reshuffle" data-reshuffle="gmAbility">Reshuffle</button>
+      </div>
+    </section>
   </div>
 
   <nav class="tabbar">
     <button class="tab active" data-tab="winCondition"><span class="tab-dot" style="background:var(--wincond)"></span>Win Condition</button>
     <button class="tab" data-tab="team"><span class="tab-dot" style="background:var(--gold)"></span>Team Event</button>
     <button class="tab" data-tab="player"><span class="tab-dot" style="background:var(--hardwood)"></span>Player Event</button>
+    <button class="tab" data-tab="gmAbility"><span class="tab-dot" style="background:var(--ability)"></span>GM Ability</button>
   </nav>
 
 </div>
@@ -392,12 +424,49 @@ const CARDS = [
   {name:"Timeout", kind:"player", rarity:"Rare", count:3, prob:"5%",
    html:`<p><em>Reaction — the only Player Event that may be saved for a future round.</em></p>
    <p>Play immediately when one of the following is revealed: Injury, Technical Foul, or Ankle-Breaker. The targeted effect is canceled completely.</p>`},
+
+  {name:"The Mirror GM", kind:"gmAbility", rarity:"Ability", count:1,
+   html:`<p><strong>Ability: Mirrored Adjustment</strong></p>
+   <p><em>Whenever your opponent changes the position of one or more of their own players (including via Team Events or lineup rotation effects), you may immediately switch the positions of any two of your own players.</em></p>
+   <p>Limits:</p>
+   <ul><li>Can only trigger once per round</li><li>Does not override lineup legality (you must still assign one player per position)</li><li>Cannot be used to undo your own previous switch — you must always create a new configuration</li></ul>`},
+
+  {name:"The Counter Strategist", kind:"gmAbility", rarity:"Ability", count:1,
+   html:`<p><strong>Ability: Stat Event Counter</strong> <em>(Stat-Focused Version)</em></p>
+   <p><em>Once per round, when your opponent places a Stat Event, you may force them to discard that Stat Event immediately. The Stat Event has no effect.</em></p>
+   <p>Clarifications:</p>
+   <ul><li>Must be used at the moment the opponent assigns their Stat Event</li><li>Cannot counter Team Events</li><li>Cannot counter your own Stat Events</li><li>Does not allow you to see hidden Stat Events early — you must choose to discard an event card before it is revealed</li><li>Usable once per round</li></ul>`},
+
+  {name:"The Defensive Coordinator", kind:"gmAbility", rarity:"Ability", count:1,
+   html:`<p><strong>Ability: Defensive Read</strong></p>
+   <p><em>Once per round, you may secretly look at one Stat Event assigned to one of your opponent's players after it is assigned.</em></p>
+   <p>Clarifications:</p>
+   <ul><li>You may not look at the player statistics</li></ul>`},
+
+  {name:"The Matchup Hunter", kind:"gmAbility", rarity:"Ability", count:1,
+   html:`<p><strong>Ability: Pre-Win Condition Swap</strong></p>
+   <p><em>After both lineups are assigned but before the Win Condition card is drawn, you may swap one of your starters with any bench player.</em></p>
+   <p>Clarifications:</p>
+   <ul><li>Triggers after lineup assignment, before any Team or Stat Events</li><li>You may use this every round</li><li>Positions are free (you choose where the promoted bench player goes)</li></ul>`},
+
+  {name:"The Advanced Scouting GM", kind:"gmAbility", rarity:"Ability", count:1,
+   html:`<p><strong>Ability: Expanded Free Agent Pool</strong></p>
+   <p><em>During the Free Agent Draft, you draw the top four cards from your Market instead of two. You may choose one of these four players as your Free Agent and must discard the other three.</em></p>
+   <p>Clarifications:</p>
+   <ul><li>You still may only trade for one Free Agent</li><li>You still discard the replaced starter</li></ul>`},
+
+  {name:"The Adjustment GM", kind:"gmAbility", rarity:"Ability", count:1,
+   html:`<p><strong>Ability: Series Momentum Adjustment</strong></p>
+   <p><em>Once per series, if your opponent's revealed Player Event would change a matchup from a win for you into a loss, you may immediately remove that Player Event from the matchup. To use this card, you must choose the player event to discard immediately after it is revealed. (Not once all stats are revealed) The Stat Event is discarded and has no effect.</em></p>
+   <p>Clarifications:</p>
+   <ul><li>Only applies when the opponent's Stat Event turns your original winning stat into a losing one</li><li>Must be used the moment the Stat Event is revealed</li><li>Can only be used once per entire best-of-five series</li><li>Must be used immediately after the stat is revealed, not at the end after all stats are revealed</li><li>Does not reveal any hidden Stat Events early — you react only when revealed</li></ul>`},
 ];
 
 const DECKS = {
   winCondition:{label:"Win Condition", dotColor:"var(--wincond)", drawCount:1},
   team:{label:"Team Event", dotColor:"var(--gold)", drawCount:1},
   player:{label:"Player Event", dotColor:"var(--hardwood)", drawCount:2},
+  gmAbility:{label:"GM Ability", dotColor:"var(--ability)", drawCount:2, select:true},
 };
 const KINDS = Object.keys(DECKS);
 
@@ -445,6 +514,8 @@ function updateCount(kind, note){
   el.innerHTML = `${piles[kind].length} left in pile${note ? `<span class="reshuffled">${note}</span>` : ''}`;
 }
 
+const pendingSelection = {};
+
 function drawCards(kind){
   const need = DECKS[kind].drawCount;
   let note = '';
@@ -456,7 +527,17 @@ function drawCards(kind){
   for(let i=0;i<need;i++) drawn.push(piles[kind].pop());
 
   const stage = document.getElementById(`stage-${kind}`);
-  if(need === 1){
+  if(DECKS[kind].select){
+    delete pendingSelection[kind];
+    pendingSelection[kind] = drawn;
+    stage.className = 'stage pair';
+    stage.innerHTML = drawn.map((c,i) => `
+      <div class="pick-wrap">
+        ${cardHtml(c)}
+        <button class="btn-keep" data-keep="${kind}" data-idx="${i}">Keep This One</button>
+      </div>
+    `).join('');
+  } else if(need === 1){
     stage.className = 'stage';
     stage.innerHTML = cardHtml(drawn[0]);
   } else {
@@ -464,6 +545,16 @@ function drawCards(kind){
     stage.innerHTML = drawn.map((c,i) => cardHtml(c, `Draw ${i+1}`)).join('');
   }
   updateCount(kind, note);
+}
+
+function keepCard(kind, idx){
+  const drawn = pendingSelection[kind];
+  if(!drawn) return;
+  const card = drawn[idx];
+  delete pendingSelection[kind];
+  const stage = document.getElementById(`stage-${kind}`);
+  stage.className = 'stage';
+  stage.innerHTML = cardHtml(card);
 }
 
 function reshuffle(kind){
@@ -476,8 +567,10 @@ KINDS.forEach(kind => updateCount(kind));
 document.getElementById('pager').addEventListener('click', e => {
   const drawKind = e.target.dataset.draw;
   const reshuffleKind = e.target.dataset.reshuffle;
+  const keepKind = e.target.dataset.keep;
   if(drawKind) drawCards(drawKind);
   if(reshuffleKind) reshuffle(reshuffleKind);
+  if(keepKind) keepCard(keepKind, Number(e.target.dataset.idx));
 });
 
 const pager = document.getElementById('pager');
