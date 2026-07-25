@@ -2,11 +2,47 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Card Court Legends</title>
-<meta http-equiv="refresh" content="0; url=tools/card-reference/">
-<link rel="canonical" href="tools/card-reference/">
+<style>
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;align-items:center;justify-content:center;
+    background:#0E0E12;
+    color:#F5F3EF;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif;
+    padding:24px;
+  }
+  .wrap{max-width:420px;width:100%;text-align:center;}
+  h1{font-size:22px;margin:0 0 24px;letter-spacing:.02em;}
+  a.tool{
+    display:block;
+    background:#17171D;
+    border:1px solid #2A2A33;
+    border-radius:14px;
+    padding:18px 20px;
+    margin-bottom:14px;
+    color:#F5F3EF;
+    text-decoration:none;
+    text-align:left;
+  }
+  a.tool:hover{border-color:#7A5A2A;}
+  a.tool .title{font-weight:700;font-size:16px;margin-bottom:4px;}
+  a.tool .desc{font-size:13px;color:#9B9BA5;}
+</style>
 </head>
 <body>
-<p>Redirecting to the <a href="tools/card-reference/">Card Reference &amp; Draw</a> tool&hellip;</p>
+<div class="wrap">
+  <h1>Card Court Legends</h1>
+  <a class="tool" href="tools/card-draw-app/">
+    <div class="title">Draw App</div>
+    <div class="desc">Mobile-friendly, swipeable deck tabs for drawing cards at the table.</div>
+  </a>
+  <a class="tool" href="tools/card-reference/">
+    <div class="title">Card Reference &amp; Draw</div>
+    <div class="desc">Full rules-text reference grid plus a desktop draw simulator.</div>
+  </a>
+</div>
 </body>
 </html>
