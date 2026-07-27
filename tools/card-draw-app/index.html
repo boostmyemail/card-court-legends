@@ -382,32 +382,35 @@ const CARDS = [
    <p><strong>The winner earns 1 point, same as any other matchup win — no additional bonus.</strong></p>`},
 
   {name:"Switching Defense", kind:"player", rarity:"Strategic", count:3, prob:"5%",
-   html:`<p>If Steals is a Win Condition this round, you may reassign defensive responsibility: identify the player on your roster with the <strong>highest SPG that still exceeds</strong> your currently assigned Steals player's SPG. That player becomes your Steals representative for this matchup.</p>
-   <p>If no such player exists, or Steals is not a Win Condition this round, discard this card.</p>`},
+   html:`<p>If Steals or Blocks is a Win Condition this round, you may reassign defensive responsibility:</p>
+   <ul><li>Choose Steals or Blocks (must match a live Win Condition this round)</li><li>Identify the player on your roster with the <strong>next-highest SPG (or BPG)</strong> above your currently assigned player for that stat</li><li>That player becomes your representative for this matchup</li></ul>
+   <p>If no such player exists, or if neither Steals nor Blocks is a Win Condition this round, discard this card.</p>`},
 
   {name:"Hot Hand", kind:"player", rarity:"Rare", count:2, prob:"3.33%",
    html:`<p>Assign to any player. That position becomes Points for this round (overriding any existing Win Condition). Increase your player's PPG by <strong>50%</strong> before comparing.</p>
    <p>If a Player Event is assigned to the opposing player, it's still valid unless that card doesn't apply to Points win conditions.</p>`},
 
   {name:"Foul", kind:"player", rarity:"Common", count:3, prob:"5%",
-   html:`<p>Assign to any player in a Points matchup. Subtract <strong>1 PPG</strong> this round. If no Points win condition exists, discard.</p>`},
+   html:`<p>Assign to any player in any Win Condition matchup. Decrease that player's Win Condition stat by <strong>10%</strong> this round.</p>`},
 
   {name:"Technical Foul", kind:"player", rarity:"Rare", count:2, prob:"3.33%",
-   html:`<p>Assign to any of your players in a Points win condition. Subtract <strong>2 PPG</strong> from this player this round.</p>`},
+   html:`<p>Assign to any of your players in any Win Condition matchup. Decrease that player's Win Condition stat by <strong>20%</strong> this round.</p>`},
 
   {name:"Flagrant Foul", kind:"player", rarity:"Rare", count:1, prob:"1.67%",
-   html:`<p>Assign to any of your players in a Points win condition. Subtract <strong>3 PPG</strong> from this player this round.</p>`},
+   html:`<p>Assign to any of your players in any Win Condition matchup. Decrease that player's Win Condition stat by <strong>30%</strong> this round.</p>`},
 
   {name:"Turnover", kind:"player", rarity:"Common", count:4, prob:"6.67%",
-   html:`<p>Assign to any player in an Assists matchup. Subtract <strong>1 APG</strong> this round. If no Assists matchup exists, discard.</p>`},
+   html:`<p>Assign to any player in a Points or Assists matchup. Choose one: subtract <strong>1 APG</strong> (Assists matchup) or subtract <strong>2 PPG</strong> (Points matchup) this round.</p>
+   <p>If neither Assists nor Points is a Win Condition this round, discard this card.</p>`},
 
   {name:"Poster Dunk", kind:"player", rarity:"Rare", count:2, prob:"3.33%",
-   html:`<p>Assign to any player with a Points win condition. Add <strong>2 PPG</strong> this round. If no Points matchup exists, discard.</p>`},
+   html:`<p>Assign to any player in a Points or Assists matchup. Choose one: add <strong>2 PPG</strong> (Points matchup) or add <strong>1 APG</strong> (Assists matchup) this round.</p>
+   <p>If neither Points nor Assists is a Win Condition this round, discard this card.</p>`},
 
   {name:"Ankle-Breaker", kind:"player", rarity:"Rare", count:3, prob:"5%",
-   html:`<p>Assign to a player in an Assists matchup.</p>
-   <ul><li>That player gains <strong>+1 APG</strong> this round</li><li>Their opponent must bench any one of their starters for the <strong>next round</strong></li></ul>
-   <p>If Assists is not a Win Condition, discard this card.</p>`},
+   html:`<p>Assign to a player in an Assists or Points matchup.</p>
+   <ul><li>Choose one: that player gains <strong>+1 APG</strong> (Assists matchup) or <strong>+2 PPG</strong> (Points matchup) this round</li><li>Their opponent must bench any one of their starters for the <strong>next round</strong></li></ul>
+   <p>If neither Assists nor Points is a Win Condition, discard this card.</p>`},
 
   {name:"Full-Court Press", kind:"player", rarity:"Rare", count:2, prob:"3.33%",
    html:`<p>Assign to any player in a Steals matchup. Add <strong>0.5 SPG</strong> this round. If Steals is not a Win Condition, discard.</p>`},
