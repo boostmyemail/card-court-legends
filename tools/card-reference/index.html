@@ -434,7 +434,7 @@ Object.keys(DECKS).forEach(resetPile);
 
 function winConditionBody(c){
   const rows = Object.entries(c.positions).map(([pos,stat]) => `<tr><td>${pos}</td><td>${stat}</td></tr>`).join('');
-  return `<table class="wc-table">${rows}</table><p style="margin-top:8px;"><em>${c.flavor}</em></p>`;
+  return `<table class="wc-table">${rows}</table>`;
 }
 function cardBodyHtml(c){
   return c.kind === 'winCondition' ? winConditionBody(c) : c.html;
