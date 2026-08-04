@@ -341,9 +341,10 @@ const CARDS = [
    <p><strong>This is a single swap between the two chosen players — complete it once, do not repeat.</strong></p>
    <p>The switched players immediately adopt the stat associated with their new position and are compared using the Win Condition stat for that position.</p>`},
 
-  {name:"Sixth Man", kind:"team", rarity:"Immediate", count:3, prob:"5%", updated:false,
+  {name:"Sixth Man", kind:"team", rarity:"Immediate", count:3, prob:"5%", updated:true,
    html:`<p>Choose one of your bench players and choose any stat (Points, Assists, Steals, Rebounds, or Blocks). Your opponent must choose a bench player as well.</p>
-   <p>These two bench players are compared in an <strong>additional matchup</strong> this round — if you win, gain <strong>+1 bonus point</strong>.</p>`},
+   <p>These two bench players are compared in an <strong>additional matchup</strong> this round — if you win, gain <strong>+1 bonus point</strong>. This bonus is the same regardless of which stat is chosen — Points no longer awards extra.</p>
+   <p>Only players currently on the bench may be selected.</p>`},
 
   {name:"Veteran Experience", kind:"player", rarity:"Rare", count:4, prob:"6.67%", updated:false,
    html:`<p>Assign to any player. For this round, that player's <strong>career total</strong> in the Win Condition stat for their position replaces their per-game value — not their career <em>average</em>, and not this season's per-game number.</p>
@@ -358,7 +359,8 @@ const CARDS = [
   {name:"Switching Defense", kind:"player", rarity:"Strategic", count:3, prob:"5%", updated:true,
    html:`<p>If Steals or Blocks is a Win Condition this round, you may reassign defensive responsibility:</p>
    <ul><li>Choose Steals or Blocks (must match a live Win Condition this round)</li><li>Identify the player on your roster with the <strong>next-highest SPG (or BPG)</strong> above your currently assigned player for that stat</li><li>That player becomes your representative for this matchup</li></ul>
-   <p>If no such player exists, or if neither Steals nor Blocks is a Win Condition this round, discard this card.</p>`},
+   <p>If no such player exists, or if neither Steals nor Blocks is a Win Condition this round, discard this card.</p>
+   <p><em>Example: Steals is a live Win Condition and your assigned player has 1.1 SPG. If a bench player has 1.4 SPG, swap them into that matchup instead.</em></p>`},
 
   {name:"Hot Hand", kind:"player", rarity:"Rare", count:2, prob:"3.33%", updated:false,
    html:`<p>Assign to any player. That position becomes Points for this round (overriding any existing Win Condition). Increase your player's PPG by <strong>50%</strong> before comparing.</p>
