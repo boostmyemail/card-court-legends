@@ -315,84 +315,79 @@ const CARDS = [
    <ul><li>1: Point Guard</li><li>2: Shooting Guard</li><li>3: Small Forward</li><li>4: Power Forward</li><li>5: Center</li><li>6: Your opponent chooses the player traded</li></ul>
    <p>The affected player is traded immediately: discard them for the remainder of the series, draw the top two cards from your Market, choose one to promote into the vacant spot, discard the other.</p>`},
 
-  {name:"Injury", kind:"team", rarity:"Rare", count:3, prob:"5%", updated:false,
+  {name:"Injury", kind:"team", rarity:"Rare", count:3, prob:"5%", updated:true,
    html:`<p>Roll to determine which starter is injured:</p>
    <ul><li>1: PG</li><li>2: SG</li><li>3: SF</li><li>4: PF</li><li>5: C</li><li>6: You choose which player is injured</li></ul>
-   <p>Injured players are removed from the board immediately, cannot play this round or the next, cannot be traded for Free Agents, and return to the bench after the following round. Promote any bench player to fill the position — they can fill the same position they had last round.</p>`},
+   <p>The injured player is moved to the injury spot on the board immediately and does not play this round. At the end of the round they move to the bench but cannot be inserted into the starting lineup for the following round — injured players miss two rounds total.</p>
+   <p>Promote any bench player to fill the position; they can fill the position even if they had it last round.</p>`},
 
-  {name:"Substitution", kind:"team", rarity:"Immediate", count:3, prob:"5%", updated:false,
+  {name:"Substitution", kind:"team", rarity:"Immediate", count:3, prob:"5%", updated:true,
    html:`<p>You may either:</p>
-   <ul><li>Swap the positions of two starters, or</li><li>Swap one starter with one bench player</li></ul>
-   <p>Promoted bench players may fill any position, regardless of real-life position.</p>`},
+   <ul><li>Swap the positions of two starters, or</li><li>Swap one starter with one bench player</li></ul>`},
 
-  {name:"Load Management", kind:"team", rarity:"Immediate", count:4, prob:"6.67%", updated:false,
+  {name:"Load Management", kind:"team", rarity:"Immediate", count:4, prob:"6.67%", updated:true,
    html:`<p>Roll a die to determine which starter must rest:</p>
    <ul><li>1: PG</li><li>2: SG</li><li>3: SF</li><li>4: PF</li><li>5: C</li><li>6: Your opponent chooses the player benched</li></ul>
-   <p>The affected player is benched for the round. Promote any bench player to fill the spot — they can fill the same position they had last round.</p>`},
+   <p>The affected player is benched for the round. Promote any bench player to fill the spot.</p>`},
 
-  {name:"All-Star Break", kind:"team", rarity:"Immediate", count:1, prob:"1.67%", updated:false,
+  {name:"All-Star Break", kind:"team", rarity:"Immediate", count:1, prob:"1.67%", updated:true,
    html:`<p>This card affects <strong>both GMs</strong>.</p>
    <p>Each GM must:</p>
    <ul><li>Identify their two players with the highest PPG</li><li>Bench both of them</li><li>Rearrange the remaining lineup however they choose</li></ul>
-   <p>Two benched players must fill in their spots. They can fill the position even if they had that position last round.</p>`},
+   <p>Two benched players must fill in their spots.</p>`},
 
-  {name:"Pick and Roll", kind:"team", rarity:"Immediate", count:4, prob:"6.67%", updated:false,
+  {name:"Pick and Roll", kind:"team", rarity:"Immediate", count:4, prob:"6.67%", updated:true,
    html:`<p>Choose any two of your opponent's starters and switch their positions.</p>
-   <p><strong>This is a single swap between the two chosen players — complete it once, do not repeat.</strong></p>
-   <p>The switched players immediately adopt the stat associated with their new position and are compared using the Win Condition stat for that position.</p>`},
+   <p>The switched players adopt the stat associated with the Win Condition for that position.</p>`},
 
   {name:"Sixth Man", kind:"team", rarity:"Immediate", count:3, prob:"5%", updated:true,
-   html:`<p>Choose one of your bench players and choose any stat (Points, Assists, Steals, Rebounds, or Blocks). Your opponent must choose a bench player as well.</p>
-   <p>These two bench players are compared in an <strong>additional matchup</strong> this round — if you win, gain <strong>+1 bonus point</strong>.</p>
-   <p>Only players currently on the bench may be selected.</p>`},
+   html:`<p>Choose one of your bench players. Your opponent chooses a bench player. Choose a Win Condition (Points, Assists, Steals, Rebounds, or Blocks).</p>
+   <p>These two bench players are compared in an <strong>additional matchup</strong> this round — if you win, gain <strong>+1 point</strong>.</p>`},
 
-  {name:"Veteran Experience", kind:"player", rarity:"Rare", count:4, prob:"6.67%", updated:false,
-   html:`<p>Assign to any player. For this round, that player's <strong>career total</strong> in the Win Condition stat for their position replaces their per-game value — not their career <em>average</em>, and not this season's per-game number.</p>
-   <p><em>Example: if the Win Condition is Assists, use total career assists — not career APG, and not this season's APG.</em></p>
-   <p>This overrides and discards all other Player Events assigned to the same position from both sides. Benefits players with long careers.</p>`},
+  {name:"Veteran Experience", kind:"player", rarity:"Rare", count:4, prob:"6.67%", updated:true,
+   html:`<p>Assign to any player. Use both players' <strong>career totals</strong> (not the average) for the Win Condition instead of the per-game average.</p>
+   <p>This overrides and discards all other Player Events assigned to the same position from both sides.</p>`},
 
-  {name:"Free Throws", kind:"player", rarity:"Rare", count:3, prob:"5%", updated:false,
-   html:`<p>Choose one position where the Win Condition is Points. For that position: replace PPG for both players with FT%, compared directly (higher wins), and discard all PPG modifiers on that position (Hot Hand, Above Average Play, etc.)</p>
-   <p>If no position has a Points win condition: each GM selects a bench player, compare FT% as a standalone sixth category, award normally.</p>
-   <p><strong>The winner earns 1 point, same as any other matchup win — no additional bonus.</strong></p>`},
+  {name:"Free Throws", kind:"player", rarity:"Rare", count:3, prob:"5%", updated:true,
+   html:`<p>Choose one position where the Win Condition is Points. For that position, compare the players' <strong>FT%</strong> instead of PPG. All other Player Events on this position are discarded.</p>
+   <p>If no position has a Points win condition: each GM selects a bench player, compare FT% as a standalone sixth category, and award the result according to normal scoring.</p>
+   <p>The winner of this matchup earns 1 point. If free throws are not included as a stat on the card, this Player Event is discarded.</p>`},
 
   {name:"Switching Defense", kind:"player", rarity:"Strategic", count:3, prob:"5%", updated:true,
-   html:`<p>If Steals or Blocks is a Win Condition this round, you may reassign defensive responsibility:</p>
-   <ul><li>Choose Steals or Blocks (must match a live Win Condition this round)</li><li>Identify the player on your roster with the <strong>next-highest SPG (or BPG)</strong> above your currently assigned player for that stat</li><li>That player becomes your representative for this matchup</li></ul>
-   <p>If no such player exists, or if neither Steals nor Blocks is a Win Condition this round, discard this card.</p>
-   <p><em>Example: Steals is a live Win Condition and your assigned player has 1.1 SPG. If a bench player has 1.4 SPG, swap them into that matchup instead.</em></p>`},
+   html:`<p>Choose any player whose Win Condition is Steals or Blocks. If another player in your <strong>starting lineup</strong> has a higher value for that stat, you may use that number instead.</p>
+   <ul><li>If multiple players have higher values, use the lowest of the higher values</li><li>Players do not change places</li></ul>
+   <p>If no such player exists, or if neither Steals nor Blocks is a Win Condition this round, discard this card.</p>`},
 
-  {name:"Hot Hand", kind:"player", rarity:"Rare", count:2, prob:"3.33%", updated:false,
-   html:`<p>Assign to any player. That position becomes Points for this round (overriding any existing Win Condition). Increase your player's PPG by <strong>50%</strong> before comparing.</p>
-   <p>If a Player Event is assigned to the opposing player, it's still valid unless that card doesn't apply to Points win conditions.</p>`},
+  {name:"Hot Hand", kind:"player", rarity:"Rare", count:2, prob:"3.33%", updated:true,
+   html:`<p>Assign to any player. The Win Condition for that position becomes Points for this round. Increase your player's PPG by <strong>50%</strong>.</p>`},
 
   {name:"Foul", kind:"player", rarity:"Common", count:3, prob:"5%", updated:true,
-   html:`<p>Assign to any player in any Win Condition matchup. Decrease that player's Win Condition stat by <strong>10%</strong> this round.</p>`},
+   html:`<p>Decrease one player's Win Condition stat by <strong>10%</strong> this round.</p>`},
 
   {name:"Technical Foul", kind:"player", rarity:"Rare", count:2, prob:"3.33%", updated:true,
-   html:`<p>Assign to any of your players in any Win Condition matchup. Decrease that player's Win Condition stat by <strong>20%</strong> this round.</p>`},
+   html:`<p>Decrease one player's Win Condition stat by <strong>20%</strong> this round.</p>`},
 
   {name:"Flagrant Foul", kind:"player", rarity:"Rare", count:1, prob:"1.67%", updated:true,
-   html:`<p>Assign to any of your players in any Win Condition matchup. Decrease that player's Win Condition stat by <strong>30%</strong> this round.</p>`},
+   html:`<p>Decrease one player's Win Condition stat by <strong>30%</strong> this round.</p>`},
 
-  {name:"Turnover", kind:"player", rarity:"Common", count:4, prob:"6.67%", updated:true,
+  {name:"Turnover", kind:"player", rarity:"Common", count:4, prob:"6.67%", updated:false,
    html:`<p>Assign to any player in a Points or Assists matchup. Choose one: subtract <strong>1 APG</strong> (Assists matchup) or subtract <strong>2 PPG</strong> (Points matchup) this round.</p>
    <p>If neither Assists nor Points is a Win Condition this round, discard this card.</p>`},
 
-  {name:"Poster Dunk", kind:"player", rarity:"Rare", count:2, prob:"3.33%", updated:true,
+  {name:"Poster Dunk", kind:"player", rarity:"Rare", count:2, prob:"3.33%", updated:false,
    html:`<p>Assign to any player in a Points or Assists matchup. Choose one: add <strong>2 PPG</strong> (Points matchup) or add <strong>1 APG</strong> (Assists matchup) this round.</p>
    <p>If neither Points nor Assists is a Win Condition this round, discard this card.</p>`},
 
-  {name:"Ankle-Breaker", kind:"player", rarity:"Rare", count:3, prob:"5%", updated:true,
+  {name:"Ankle-Breaker", kind:"player", rarity:"Rare", count:3, prob:"5%", updated:false,
    html:`<p>Assign to a player in an Assists or Points matchup.</p>
    <ul><li>Choose one: that player gains <strong>+1 APG</strong> (Assists matchup) or <strong>+2 PPG</strong> (Points matchup) this round</li><li>Their opponent must bench any one of their starters for the <strong>next round</strong></li></ul>
    <p>If neither Assists nor Points is a Win Condition, discard this card.</p>`},
 
-  {name:"Full-Court Press", kind:"player", rarity:"Rare", count:2, prob:"3.33%", updated:false,
-   html:`<p>Assign to any player in a Steals matchup. Add <strong>0.5 SPG</strong> this round. If Steals is not a Win Condition, discard.</p>`},
+  {name:"Full-Court Press", kind:"player", rarity:"Rare", count:2, prob:"3.33%", updated:true,
+   html:`<p>Assign to any player with a Steals or Blocks Win Condition. Add <strong>0.5 SPG</strong> or <strong>1 BPG</strong> to their stat. If neither Steals nor Blocks is a Win Condition, discard this card.</p>`},
 
-  {name:"Buzzer Beater", kind:"player", rarity:"Unique", count:1, prob:"1.67%", updated:false,
-   html:`<p>Assign to any player in a Points matchup. Add <strong>+5 PPG</strong> to their PPG this round.</p>`},
+  {name:"Buzzer Beater", kind:"player", rarity:"Unique", count:1, prob:"1.67%", updated:true,
+   html:`<p>Add <strong>+5 PPG</strong> to any player's PPG this round.</p>`},
 
   {name:"Above Average Play", kind:"player", rarity:"Common", count:3, prob:"5%", updated:false,
    html:`<p>Assign to any player. Increase that player's Win Condition stat by <strong>20%</strong> this round.</p>`},
