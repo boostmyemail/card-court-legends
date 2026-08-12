@@ -431,27 +431,25 @@ const CARDS = [
 
   {name:"The Mirror GM", kind:"gmAbility", rarity:"Ability", count:1,
    html:`<p><strong>Ability: Mirrored Adjustment</strong></p>
-   <p><em>Whenever your opponent changes the position of one or more of their own players (including via Team Events or lineup rotation effects), you may immediately switch the positions of any two of your own players.</em></p>
+   <p><em>Once per series, when your opponent changes the position of one or more of their own players (including via Team Events or lineup rotation effects), you may immediately switch the positions of any two of your own players.</em></p>
    <p>Limits:</p>
-   <ul><li>Can only trigger once per round</li><li>Does not override lineup legality (you must still assign one player per position)</li><li>Cannot be used to undo your own previous switch — you must always create a new configuration</li></ul>`},
+   <ul><li>Can only trigger once per Game</li><li>Does not override lineup legality (you must still assign one player per position)</li><li>Cannot be used to undo your own previous switch — you must always create a new configuration</li></ul>`},
 
   {name:"The Counter Strategist", kind:"gmAbility", rarity:"Ability", count:1,
    html:`<p><strong>Ability: Player Event Counter</strong></p>
-   <p><em>Once per round, when your opponent places a Player Event, you may force them to discard that Player Event immediately. The Player Event has no effect.</em></p>
+   <p><em>Once per Series, when your opponent places a Player Event, you may force them to discard that Player Event immediately. The Player Event has no effect.</em></p>
    <p>Clarifications:</p>
-   <ul><li>Must be used at the moment the opponent assigns their Player Event</li><li>Cannot counter Team Events</li><li>Cannot counter your own Player Events</li><li>Does not allow you to see hidden Player Events early — you must choose to discard an event card before it is revealed</li><li>Usable once per round</li></ul>`},
+   <ul><li>Must be used at the moment the opponent assigns their Player Event</li><li>Cannot counter Team Events</li><li>Cannot counter your own Player Events</li><li>Does not allow you to see hidden Player Events early, you must choose to discard an event card before it is revealed</li><li>Usable once per Game</li></ul>`},
 
   {name:"The Defensive Coordinator", kind:"gmAbility", rarity:"Ability", count:1,
    html:`<p><strong>Ability: Defensive Read</strong></p>
-   <p><em>Once per round, you may secretly look at one Player Event assigned to one of your opponent's players after it is assigned.</em></p>
-   <p>Clarifications:</p>
-   <ul><li>You may not look at the player statistics</li></ul>`},
+   <p><em>Once per Series, after a Win Condition is revealed (and before any event cards are drawn), you may look at the stats of one player of the opponent's team.</em></p>`},
 
   {name:"The Matchup Hunter", kind:"gmAbility", rarity:"Ability", count:1,
    html:`<p><strong>Ability: Pre-Win Condition Swap</strong></p>
-   <p><em>After both lineups are assigned but before the Win Condition card is drawn, you may swap one of your starters with any bench player.</em></p>
+   <p><em>Once per series, after both lineups are assigned and after the Win Condition card is drawn, you may swap one of your starters with any bench player.</em></p>
    <p>Clarifications:</p>
-   <ul><li>Triggers after lineup assignment, before any Team or Player Events</li><li>You may use this every round</li><li>Positions are free (you choose where the promoted bench player goes)</li></ul>`},
+   <ul><li>Triggers after lineup assignment, before any Team or Player Events</li></ul>`},
 
   {name:"The Advanced Scouting GM", kind:"gmAbility", rarity:"Ability", count:1,
    html:`<p><strong>Ability: Expanded Free Agent Pool</strong></p>
