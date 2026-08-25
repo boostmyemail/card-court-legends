@@ -337,8 +337,10 @@ const CARDS = [
 
   {name:"Trade Request", kind:"team", rarity:"Immediate", count:3, prob:"5%",
    html:`<p>Roll a die to determine which starter must be traded:</p>
-   <ul><li>1: Point Guard</li><li>2: Shooting Guard</li><li>3: Small Forward</li><li>4: Power Forward</li><li>5: Center</li><li>6: Your opponent chooses the player traded</li></ul>
-   <p>The affected player is traded immediately: discard them for the remainder of the series, draw the top two cards from your Market, choose one to promote into the vacant spot, discard the other.</p>`},
+   <ul><li>1: Point Guard</li><li>2: Shooting Guard</li><li>3: Small Forward</li><li>4: Power Forward</li><li>5: Center</li><li>6: Your opponent chooses the player that must be traded</li></ul>
+   <p>The affected player is traded immediately.</p>
+   <ul><li>Discard that player.</li><li>Draw the top two cards from your Market.</li><li>Choose one to promote into the now-vacant starting position.</li><li>Discard the unused Free Agent.</li></ul>
+   <p>If playing in Team Mode, discard this card and draw again.</p>`},
 
   {name:"Injury", kind:"team", rarity:"Rare", count:3, prob:"5%",
    html:`<p>Roll to determine which starter is injured:</p>
